@@ -1,0 +1,49 @@
+name: Playwright Tests
+on:
+  push:
+    branches: [main, master, develop]
+  pull_request:
+    branches: [main, master]
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: "Choose environment"
+        required: true
+        default: "dev"
+        type: choice
+        options:
+          - dev
+          - staging
+          - prod
+jobs:
+  test:
+    timeout-minutes: 5
+    runs-on: ubuntu-latest
+
+    env:
+      ENV_FILE: ${{
+        github.event_name == 'workflow_dispatch' && format('.env.{0}', inputs.environment) || '.env.dev' }}
+
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: lts/*
+      - name: Install dependencies
+        run: npm ci
+      - name: Install Playwright Browsers
+        run: npx playwright install --with-deps
+      - name: Copy environment file
+        run: |
+          echo "Using env file: $ENV_FILE"
+          cp "$ENV_FILE" .env
+          echo "Active .env content:"
+          cat .env
+      - name: Run Playwright tests
+        run: npx playwright test
+      - uses: actions/upload-artifact@v4
+        if: ${{ !cancelled() }}
+        with:
+          name: playwright-report-${{ inputs.environment || 'dev' }}
+          path: playwright-report/
+          retention-days: 30

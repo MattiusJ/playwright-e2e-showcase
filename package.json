@@ -1,0 +1,23 @@
+{
+  "name": "playwright-e2e-showcase",
+  "version": "1.0.0",
+  "description": "Playwright end-to-end test automation showcase",
+  "main": "index.js",
+  "scripts": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MattiusJ/playwright-e2e-showcase.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/MattiusJ/playwright-e2e-showcase/issues"
+  },
+  "homepage": "https://github.com/MattiusJ/playwright-e2e-showcase#readme",
+  "devDependencies": {
+    "@playwright/test": "^1.57.0",
+    "@types/node": "^24.10.1"
+  }
+}
