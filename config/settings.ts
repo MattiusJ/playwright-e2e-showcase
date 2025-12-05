@@ -11,7 +11,7 @@ interface Env {
 
 const env: Env = {
     baseUrl: process.env.TEST_BASE_URL || 'https://www.saucedemo.com',
-    loginUrl: process.env.TEST_LOGIN_URL || process.env.TEST_BASE_URL || '',
+    loginUrl: process.env.TEST_LOGIN_URL || '',
     kibanaUrl: process.env.TEST_KIBANA_URL,
     grafanaUrl: process.env.TEST_GRAFANA_URL,
     username: process.env.TEST_USERNAME || 'standard_user',
