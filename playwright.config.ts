@@ -11,25 +11,14 @@ export default defineConfig({
   retries: process.env.CI ? 2 : 0,
   workers: process.env.CI ? 1 : undefined,
   reporter: 'html',
-
+  use: {
+    testIdAttribute: 'data-test',
+  },
   projects: [
     {
       name: 'setup',
       testMatch: /.*\.setup\.ts/,
     },
-    // {
-    //   name: 'authenticated',
-    //   testMatch: /.*\.loggedin\.spec\.ts/,
-    //   dependencies: ['setup'],
-    //   use: {
-    //     storageState: authFile,
-    //   },
-    // },
-    // {
-    //   name: 'login tests',
-    //   testMatch: ['login.spec.ts'],
-    //   // testIgnore: ['**s/*login.spec.ts', '**/*.setup.ts'],
-    // },
     {
       name: 'chromium',
       dependencies: ['setup'],

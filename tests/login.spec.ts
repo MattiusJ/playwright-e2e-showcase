@@ -8,74 +8,75 @@ test.describe('Login functionality tests', () => {
         await page.goto(env.baseUrl);
     });
 
+    // These tests below could be handled as parameterized tests - but sometimes there's no need to overcomplicate things.
     test('Successful login', async ({ page }) => {
         await expect(page).toHaveURL(env.baseUrl)
-        await page.fill(login.username, env.username);
-        await page.fill(login.password, env.password);
-        await page.click(login.loginButton);
+        await page.fill(login.locator.username, env.username);
+        await page.fill(login.locator.password, env.password);
+        await page.click(login.locator.loginButton);
         await expect(page).toHaveURL(`${env.baseUrl}/inventory.html`);
     });
 
     test('Invalid login', async ({ page }) => {
         await expect(page).toHaveURL(env.baseUrl)
-        await page.fill(login.username, 'absolutely');
-        await page.fill(login.password, 'definite');
-        await page.click(login.loginButton);
+        await page.fill(login.locator.username, 'absolutely');
+        await page.fill(login.locator.password, 'definite');
+        await page.click(login.locator.loginButton);
 
-        await expect(page.locator(login.errorMessage)).toBeVisible();
+        await expect(page.locator(login.locator.errorMessage)).toBeVisible();
 
-        await expect(page.locator(login.errorMessage)).toHaveText(login.invalidLoginErrorMessage);
+        await expect(page.locator(login.locator.errorMessage)).toHaveText(login.invalidLoginErrorMessage);
 
     });
 
     test('Invalid login - no username', async ({ page }) => {
         await expect(page).toHaveURL(env.baseUrl)
-        await page.fill(login.username, '');
-        await page.fill(login.password, env.password);
-        await page.click(login.loginButton);
+        await page.fill(login.locator.username, '');
+        await page.fill(login.locator.password, env.password);
+        await page.click(login.locator.loginButton);
 
-        await expect(page.locator(login.errorMessage)).toBeVisible();
+        await expect(page.locator(login.locator.errorMessage)).toBeVisible();
 
-        await expect(page.locator(login.errorMessage)).toHaveText(login.usernameRequiredErrorMessage);
+        await expect(page.locator(login.locator.errorMessage)).toHaveText(login.usernameRequiredErrorMessage);
     });
 
     test('Invalid login - no password', async ({ page }) => {
         await expect(page).toHaveURL(env.baseUrl)
-        await page.fill(login.username, env.username);
-        await page.fill(login.password, '');
-        await page.click(login.loginButton);
+        await page.fill(login.locator.username, env.username);
+        await page.fill(login.locator.password, '');
+        await page.click(login.locator.loginButton);
 
-        await expect(page.locator(login.errorMessage)).toBeVisible();
+        await expect(page.locator(login.locator.errorMessage)).toBeVisible();
 
-        await expect(page.locator(login.errorMessage)).toHaveText(login.passwordRequiredErrorMessage);
+        await expect(page.locator(login.locator.errorMessage)).toHaveText(login.passwordRequiredErrorMessage);
     });
 
     test('Locked out user login', async ({ page }) => {
         await expect(page).toHaveURL(env.baseUrl)
-        await page.fill(login.username, 'locked_out_user');
-        await page.fill(login.password, env.password);
-        await page.click(login.loginButton);
+        await page.fill(login.locator.username, 'locked_out_user');
+        await page.fill(login.locator.password, env.password);
+        await page.click(login.locator.loginButton);
 
-        await expect(page.locator(login.errorMessage)).toBeVisible();
+        await expect(page.locator(login.locator.errorMessage)).toBeVisible();
 
-        await expect(page.locator(login.errorMessage)).toHaveText(login.lockedUserErrorMessage);
+        await expect(page.locator(login.locator.errorMessage)).toHaveText(login.lockedUserErrorMessage);
 
     });
 
     test('Successful login after wrong password', async ({ page }) => {
         await expect(page).toHaveURL(env.baseUrl)
-        await page.fill(login.username, env.username);
-        await page.fill(login.password, 'wrong_password');
-        await page.click(login.loginButton);
+        await page.fill(login.locator.username, env.username);
+        await page.fill(login.locator.password, 'wrong_password');
+        await page.click(login.locator.loginButton);
 
-        await expect(page.locator(login.errorMessage)).toBeVisible();
+        await expect(page.locator(login.locator.errorMessage)).toBeVisible();
 
-        await expect(page.locator(login.errorMessage)).toHaveText(login.invalidLoginErrorMessage);
-        await page.click(login.errorButton);
+        await expect(page.locator(login.locator.errorMessage)).toHaveText(login.invalidLoginErrorMessage);
+        await page.click(login.locator.errorButton);
 
-        await page.fill(login.username, env.username);
-        await page.fill(login.password, env.password);
-        await page.click(login.loginButton);
+        await page.fill(login.locator.username, env.username);
+        await page.fill(login.locator.password, env.password);
+        await page.click(login.locator.loginButton);
 
         await expect(page).toHaveURL(`${env.baseUrl}/inventory.html`);
     });
@@ -89,8 +90,8 @@ test.describe('Login functionality tests', () => {
 
         await page.goto(`${env.baseUrl}/inventory.html`);
         await expect(page).toHaveURL(env.baseUrl);
-        await expect(page.locator(login.errorMessage)).toBeVisible();
-        await expect(page.locator(login.errorMessage)).toHaveText(login.noAccessErrorMessage);
-        await page.click(login.errorButton);
+        await expect(page.locator(login.locator.errorMessage)).toBeVisible();
+        await expect(page.locator(login.locator.errorMessage)).toHaveText(login.noAccessErrorMessage);
+        await page.click(login.locator.errorButton);
     });
 });
